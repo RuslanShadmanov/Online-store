@@ -16,6 +16,7 @@ export const Product = ({
   category,
   toggleFavorites,
   favorites,
+  addToCart,
 }) => {
   const isFavorite = favorites.some((product) => product.id === id);
 
@@ -38,7 +39,7 @@ export const Product = ({
           Price: ${price}
         </CardSubtitle>
         <CardText>{description.slice(0, 100)}...</CardText>
-        <Button>Button</Button>
+        <Button onClick={() => addToCart(id)}>Add to Cart</Button>
       </CardBody>
     </Card>
   );

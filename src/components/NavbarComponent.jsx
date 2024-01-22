@@ -1,8 +1,12 @@
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from "reactstrap";
+import { IoMdCart } from "react-icons/io";
+
 export const NavbarComponent = ({
   setActiveCategory,
   categories,
   activeCategory,
+  setIsCartOpen,
+  isCartOpen,
 }) => {
   return (
     <>
@@ -32,6 +36,12 @@ export const NavbarComponent = ({
             );
           })}
         </Nav>
+        <IoMdCart
+          className="Cart"
+          color="white"
+          fontSize="35px"
+          onClick={() => setIsCartOpen(!isCartOpen)}
+        />
       </Navbar>
     </>
   );

@@ -33,3 +33,20 @@
 .nav-item a:hover {
   color: white;
 }
+
+.Cart {
+  cursor: pointer;
+}
+
+.cart-wrapper ul li {
+  display: flex;
+  justify-content: space-between;
+}
+.cart-wrapper {
+  width: 80%;
+  margin: auto;
+}
+
+.cart-wrapper h2 {
+  text-align: center;
+}
