@@ -75,6 +75,13 @@ const App = () => {
       localStorage.setItem("favorites", JSON.stringify(arr));
     }
   };
+
+  const changeQuantity = (idObject, num) => {
+    const updateCart = cart.map((product) =>
+      product.id === idObject ? { ...product, quantity: num } : product
+    );
+    setCart(updateCart);
+  };
   return (
     <div className="App">
       <div>
@@ -87,7 +94,7 @@ const App = () => {
         />
       </div>
       {isCartOpen ? (
-        <Cart cart={cart} />
+        <Cart cart={cart} changeQuantity={changeQuantity} />
       ) : (
         <div className="products-wrapper">
           {products.map((product) => {

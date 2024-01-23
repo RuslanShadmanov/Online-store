@@ -7,16 +7,16 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-export const Cart = ({ cart }) => {
+export const Cart = ({ cart, changeQuantity }) => {
   const numberOfListItems = [];
-  for (let i = 0; i <= 10; i++) {
+  for (let i = 1; i <= 10; i++) {
     numberOfListItems.push(i);
   }
   return (
     <div className="cart-wrapper">
       <h2>Cart</h2>
       <ListGroup>
-        {cart.map(({ title, price, image }) => {
+        {cart.map(({ title, price, image, quantity, id }) => {
           return (
             <ListGroupItem>
               <img src={image} height={50} />
@@ -24,14 +24,18 @@ export const Cart = ({ cart }) => {
               <p>${price}</p>
               <UncontrolledDropdown>
                 <DropdownToggle caret color="dark">
-                  1 item
+                  {quantity}
+                  {quantity === 1 ? " item" : " items"}
                 </DropdownToggle>
                 <DropdownMenu dark>
-                  <DropdownItem>
-                    {numberOfListItems.map((num) => {
-                      return <DropdownItem>{num} items</DropdownItem>;
-                    })}
-                  </DropdownItem>
+                  {numberOfListItems.map((num) => {
+                    return (
+                      <DropdownItem onClick={() => changeQuantity(id, num)}>
+                        {num}
+                        {num === 1 ? " item" : " items"}
+                      </DropdownItem>
+                    );
+                  })}
                 </DropdownMenu>
               </UncontrolledDropdown>
               <Button color="danger" size="sm">
