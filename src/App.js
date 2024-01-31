@@ -129,3 +129,112 @@ const App = () => {
   );
 };
 export default App;
+
+
+
+//class Node {
+    constructor(value) {
+        this.value = value;
+        this.next = null;
+    }
+}
+
+class LinkedList {
+    constructor() {
+        this.head = null;
+        this.tail = null;
+        this.length = 0;
+    }
+
+    push(value) { //TC: O(1)
+        const newNode = new Node(value);
+        if (this.head === null) {
+            this.head = newNode;
+        } else {
+            this.tail.next = newNode
+        }
+        this.tail = newNode;
+        this.length++;
+    }
+
+    shift() { // TC: O(1)
+        if (this.head === null) return;
+        const result = this.head.value;
+        const nextNode = this.head.next;
+        this.head = nextNode;
+        if (this.head === null) this.tail = null
+        this.length--;
+        return result;
+    }
+
+    // adding to the beginning of the LinkedList
+    unshift(value) {
+        const newNode = new Node(value);
+        if (this.head === null) {
+            this.head = newNode;
+            this.tail = newNode;
+        } else {
+            newNode.next = this.head;
+            this.head = newNode;
+        }
+        this.length++;
+    }
+    pop() {
+        // if (this.length == 0) return
+        if (this.head === null) return;
+        let current = this.head;
+        let prev = null;
+        while (current !=  this.tail) {
+            prev = current;
+            current = current.next;
+        }
+        if (this.length === 1) {
+            this.head == null
+        } else {
+            prev.next = null    
+        }
+        this.tail = prev;
+        this.length--;
+        return current.value;
+    }
+
+    getNode(index) {
+        if (index < 0 || index > this.length) return null;
+        let current = this.head;
+        for (let i = 0; i < index; i++) {
+            current = current.next;
+        }
+        return current;
+    }
+
+    // 1. set a value of the node at a given index
+        // get the node using getNode method
+        // change the value of the node
+    // 2. insert a node at a given index
+        // 2.1. if index is 0 => call method unshift(value)
+        // 2.2. if index is equal to length => call push(value)
+        // 2.3. if somewhere in the middle => use three pointers prev, curr, next
+    
+// }
+
+// const lineUp = new LinkedList()
+// lineUp.push("Bekzhan")
+// lineUp.push("Atai")
+// lineUp.push("Aizirek")
+
+// lineUp.shift()
+// lineUp.shift()
+// lineUp.shift()
+
+// // const array = [2, 5, 7, 8]
+// // array[2]
+
+// lineUp.push("Nuradil")
+// lineUp.push("Gulira")
+
+// lineUp.unshift("Stefan")
+
+// console.log(lineUp)
+
+// head                    tail
+// "Bekzhan" => "Atai" => "Aizirek"
