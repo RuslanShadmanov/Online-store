@@ -7,9 +7,18 @@ import { Link } from "react-router-dom";
 export const NavbarComponent = ({
   setActiveCategory,
   categories,
+  cart,
 
   activeCategory,
 }) => {
+  const total = cart
+    .reduce((acc, el) => {
+      return (acc += el.quantity * el.price);
+    }, 0)
+    .toFixed(2);
+  const numOfCartItems = cart.reduce((acc, el) => {
+    return (acc += el.quantity);
+  }, 0);
   return (
     <>
       <Navbar className="my-2" color="dark" dark>
@@ -50,12 +59,15 @@ export const NavbarComponent = ({
             onClick={() => setActiveCategory("")}
           />
         </Link>
-        <Link to="/cart">
+        <Link to="/cart" className="link-to-cart">
+          <div className="cart-wrapper-1"></div>
           <AiOutlineShoppingCart
             style={{ fill: "white", fontSize: "25px" }}
             className="cart"
             onClick={() => setActiveCategory("")}
           />
+          <span className="cart-number">{numOfCartItems}</span>
+          <span className="cart-total">${total}</span>
         </Link>
       </Navbar>
     </>

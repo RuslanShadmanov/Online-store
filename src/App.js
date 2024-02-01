@@ -57,6 +57,17 @@ const App = () => {
       setCart(updatedCart);
     }
   };
+
+  const updateQuantity = (id, num) => {
+    const newCart = cart.map((item) => {
+      if (item.id === id) {
+        item.quantity = num;
+      }
+      return item;
+    });
+    setCart(newCart);
+  };
+
   const toggleFavorites = (productId) => {
     const ifExists = favorites.some((product) => product.id === productId);
     if (ifExists) {
@@ -72,6 +83,10 @@ const App = () => {
       setFavorites(arr);
     }
   };
+  const deleteFromCart = (id) => {
+    const newCart = cart.filter((item) => item.id != id);
+    setCart(newCart);
+  };
   return (
     <BrowserRouter>
       <div className="App">
@@ -80,10 +95,20 @@ const App = () => {
             setActiveCategory={setActiveCategory}
             categories={categories}
             activeCategory={activeCategory}
+            cart={cart}
           />
         </div>
         <Routes>
-          <Route path="/cart" element={<Cart cart={cart} />} />
+          <Route
+            path="/cart"
+            element={
+              <Cart
+                cart={cart}
+                updateQuantity={updateQuantity}
+                deleteFromCart={deleteFromCart}
+              />
+            }
+          />
           <Route
             path="/"
             element={
@@ -130,91 +155,88 @@ const App = () => {
 };
 export default App;
 
+// //class Node {
+//     constructor(value); {
+//         this.value = value;
+//         this.next = null;
+//     }
 
+// class LinkedList {
+//     constructor() {
+//         this.head = null;
+//         this.tail = null;
+//         this.length = 0;
+//     }
+//   }
+//     push(value); { //TC: O(1)
+//         const newNode = new Node(value);
+//         if (this.head === null) {
+//             this.head = newNode;
+//         } else {
+//             this.tail.next = newNode
+//         }
+//         this.tail = newNode;
+//         this.length++;
+//     }
 
-//class Node {
-    constructor(value) {
-        this.value = value;
-        this.next = null;
-    }
-}
+//     shift() { // TC: O(1)
+//         if (this.head === null) return;
+//         const result = this.head.value;
+//         const nextNode = this.head.next;
+//         this.head = nextNode;
+//         if (this.head === null) this.tail = null
+//         this.length--;
+//         return result;
+//     }
 
-class LinkedList {
-    constructor() {
-        this.head = null;
-        this.tail = null;
-        this.length = 0;
-    }
+//     // adding to the beginning of the LinkedList
+//     unshift(value) {
+//         const newNode = new Node(value);
+//         if (this.head === null) {
+//             this.head = newNode;
+//             this.tail = newNode;
+//         } else {
+//             newNode.next = this.head;
+//             this.head = newNode;
+//         }
+//         this.length++;
+//     }
+//     pop() {
+//         // if (this.length == 0) return
+//         if (this.head === null) return;
+//         let current = this.head;
+//         let prev = null;
+//         while (current !=  this.tail) {
+//             prev = current;
+//             current = current.next;
+//         }
+//         if (this.length === 1) {
+//             this.head == null
+//         } else {
+//             prev.next = null
+//         }
+//         this.tail = prev;
+//         this.length--;
+//         return current.value;
+//     }
 
-    push(value) { //TC: O(1)
-        const newNode = new Node(value);
-        if (this.head === null) {
-            this.head = newNode;
-        } else {
-            this.tail.next = newNode
-        }
-        this.tail = newNode;
-        this.length++;
-    }
+//     getNode(index) {
+//         if (index < 0 || index > this.length) return null;
+//         let current = this.head;
+//         for (let i = 0; i < index; i++) {
+//             current = current.next;
+//         }
+//         return current;
+//     }
 
-    shift() { // TC: O(1)
-        if (this.head === null) return;
-        const result = this.head.value;
-        const nextNode = this.head.next;
-        this.head = nextNode;
-        if (this.head === null) this.tail = null
-        this.length--;
-        return result;
-    }
+// 1. set a value of the node at a given index
+// get the node using getNode method
+// change the value of the node
+// 2. insert a node at a given index
+// 2.1. if index is 0 => call method unshift(value)
+// 2.2. if index is equal to length => call push(value)
+// 2.3. if somewhere in the middle => use three pointers prev, curr, next
 
-    // adding to the beginning of the LinkedList
-    unshift(value) {
-        const newNode = new Node(value);
-        if (this.head === null) {
-            this.head = newNode;
-            this.tail = newNode;
-        } else {
-            newNode.next = this.head;
-            this.head = newNode;
-        }
-        this.length++;
-    }
-    pop() {
-        // if (this.length == 0) return
-        if (this.head === null) return;
-        let current = this.head;
-        let prev = null;
-        while (current !=  this.tail) {
-            prev = current;
-            current = current.next;
-        }
-        if (this.length === 1) {
-            this.head == null
-        } else {
-            prev.next = null    
-        }
-        this.tail = prev;
-        this.length--;
-        return current.value;
-    }
-
-    getNode(index) {
-        if (index < 0 || index > this.length) return null;
-        let current = this.head;
-        for (let i = 0; i < index; i++) {
-            current = current.next;
-        }
-        return current;
-    }
-
-    // 1. set a value of the node at a given index
-        // get the node using getNode method
-        // change the value of the node
-    // 2. insert a node at a given index
-        // 2.1. if index is 0 => call method unshift(value)
-        // 2.2. if index is equal to length => call push(value)
-        // 2.3. if somewhere in the middle => use three pointers prev, curr, next
-    
 // }
 
 // const lineUp = new LinkedList()
