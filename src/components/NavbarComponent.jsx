@@ -2,7 +2,8 @@ import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from "reactstrap";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { MdFavorite } from "react-icons/md";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 export const NavbarComponent = ({
   setActiveCategory,
@@ -11,6 +12,13 @@ export const NavbarComponent = ({
 
   activeCategory,
 }) => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    const category =
+      pathname === "/" ? "ALL" : pathname.slice(1).replace("-", " ");
+
+    setActiveCategory(category);
+  }, []);
   const total = cart
     .reduce((acc, el) => {
       return (acc += el.quantity * el.price);

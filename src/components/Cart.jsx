@@ -7,6 +7,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
+
 export const Cart = ({ cart, updateQuantity, deleteFromCart }) => {
   const numOfListItems = [];
   for (let i = 1; i <= 10; i++) {
@@ -15,6 +16,7 @@ export const Cart = ({ cart, updateQuantity, deleteFromCart }) => {
   return (
     <div className="cart-wrapper">
       <h2>Cart</h2>
+
       <ListGroup>
         {cart.map(({ title, price, image, quantity, id }) => {
           return (

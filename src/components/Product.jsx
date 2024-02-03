@@ -18,6 +18,7 @@ export const Product = ({
   toggleFavorites,
   favorites,
   addToCart,
+  setSelectedProducts,
 }) => {
   const isFavorite = favorites.some((product) => product.id === id);
 
@@ -35,16 +36,18 @@ export const Product = ({
         style={{ fill: isFavorite ? "red" : "lightgray" }}
       />
       <CardBody>
-        <Link to={`/products/${id}`} className="link">
-          <CardTitle tag="h5" className="product-title">
-            {title}
-          </CardTitle>
-          <CardSubtitle className="mb-2 text-muted" tag="h6">
-            Price: ${price}
-          </CardSubtitle>
+        <div onClick={() => setSelectedProducts(category)}>
+          <Link to={`/${category.replace(" ", "-")}/${id}`} className="link">
+            <CardTitle tag="h5" className="product-title">
+              {title}
+            </CardTitle>
+            <CardSubtitle className="mb-2 text-muted" tag="h6">
+              Price: ${price}
+            </CardSubtitle>
 
-          <CardText>{description.slice(0, 100)}...</CardText>
-        </Link>
+            <CardText>{description.slice(0, 100)}...</CardText>
+          </Link>
+        </div>
 
         <Button onClick={() => addToCart(id)}>Add to Cart</Button>
       </CardBody>

@@ -4,6 +4,7 @@ export const List = ({
   toggleFavorites,
   favorites,
   addToCart,
+  setSelectedProducts,
 }) => {
   return (
     <div className="products-wrapper">
@@ -14,6 +15,7 @@ export const List = ({
             toggleFavorites={toggleFavorites}
             favorites={favorites}
             addToCart={addToCart}
+            setSelectedProducts={setSelectedProducts}
           />
         );
       })}

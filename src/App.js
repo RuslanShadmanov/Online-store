@@ -6,12 +6,14 @@ import { NavbarComponent } from "./components/NavbarComponent";
 import { Cart } from "./components/Cart";
 import { List } from "./components/List";
 import { FullProductPage } from "./components/FullProductPage";
+import { BreadCrumbs } from "./components/BreadCrumbs";
 const App = () => {
   const [products, setProducts] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [activeCategory, setActiveCategory] = useState("ALL");
   const [categories, setCategories] = useState([]);
   const [cart, setCart] = useState([]);
+  const [selectedProducts, setSelectedProducts] = useState("");
   useEffect(() => {
     fetchProducts();
     document.title = activeCategory;
@@ -98,6 +100,7 @@ const App = () => {
             cart={cart}
           />
         </div>
+        <BreadCrumbs products={products} />
         <Routes>
           <Route
             path="/cart"
@@ -117,6 +120,7 @@ const App = () => {
                 favorites={favorites}
                 addToCart={addToCart}
                 toggleFavorites={toggleFavorites}
+                setSelectedProducts={setSelectedProducts}
               />
             }
           />
@@ -128,6 +132,7 @@ const App = () => {
                 favorites={favorites}
                 addToCart={addToCart}
                 toggleFavorites={toggleFavorites}
+                setSelectedProducts={setSelectedProducts}
               />
             }
           />
@@ -141,11 +146,16 @@ const App = () => {
                 favorites={favorites}
                 addToCart={addToCart}
                 toggleFavorites={toggleFavorites}
+                setSelectedProducts={setSelectedProducts}
               />
             }
           />
           <Route
-            path="/products/:id"
+            path={
+              activeCategory === "ALL"
+                ? `/${selectedProducts.replace("", "-")}/:id`
+                : `/${activeCategory.replace("", "-")}/:id`
+            }
             element={<FullProductPage products={products} />}
           />
         </Routes>
