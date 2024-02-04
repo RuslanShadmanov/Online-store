@@ -7,6 +7,9 @@ import { Cart } from "./components/Cart";
 import { List } from "./components/List";
 import { FullProductPage } from "./components/FullProductPage";
 import { BreadCrumbs } from "./components/BreadCrumbs";
+import { useLocalStorage } from "./components/hooks/useLocalStorage";
+import { useFetch } from "./components/hooks/useFetch";
+import { Pages } from "./components/Pages";
 const App = () => {
   const [products, setProducts] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -14,8 +17,15 @@ const App = () => {
   const [categories, setCategories] = useState([]);
   const [cart, setCart] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState("");
+  const { setItem, getItem } = useLocalStorage();
+  const { data, loading } = useFetch("https://fakestoreapi.com/products");
+
   useEffect(() => {
-    fetchProducts();
+    // fetchProducts();
+    const initialFav = getItem("favorites");
+    setFavorites(initialFav);
+    const initialCart = getItem("cart");
+    setCart(initialCart);
     document.title = activeCategory;
   }, []);
 
@@ -23,12 +33,19 @@ const App = () => {
     document.title = `${activeCategory} (${favorites.length})`;
   }, [activeCategory, favorites]);
 
-  const fetchProducts = async () => {
-    const res = await fetch("https://fakestoreapi.com/products");
-    const data = await res.json();
-    setProducts(data);
-    getCategories(data);
-  };
+  useEffect(() => {
+    if (data) {
+      setProducts(data);
+      getCategories(data);
+    }
+  }, [data]);
+
+  // const fetchProducts = async () => {
+  //   const res = await fetch("https://fakestoreapi.com/products");
+  //   const data = await res.json();
+  //   setProducts(data);
+  //   getCategories(data);
+  // };
   const getCategories = (data) => {
     const allCategories = [
       ...new Set(
@@ -45,19 +62,22 @@ const App = () => {
   };
   const addToCart = (id) => {
     const ifExists = cart.some((product) => product.id === id);
+    let newCart;
     if (!ifExists) {
       const newProduct = products.find((product) => product.id === id);
-      setCart([...cart, { ...newProduct, quantity: 1 }]);
+      newCart = [...cart, { ...newProduct, quantity: 1 }];
     } else {
-      const updatedCart = cart.map((item) => {
+      newCart = cart.map((item) => {
         if (item.id === id) {
           return { ...item, quantity: item.quantity + 1 };
         } else {
           return item;
         }
       });
-      setCart(updatedCart);
     }
+    setCart(newCart);
+    // localStorage.setItem("cart", JSON.stringify(newCart));
+    setItem("cart", newCart);
   };
 
   const updateQuantity = (id, num) => {
@@ -68,26 +88,30 @@ const App = () => {
       return item;
     });
     setCart(newCart);
+    // localStorage.setItem("cart", JSON.stringify(newCart));
+    setItem("cart", newCart);
   };
 
   const toggleFavorites = (productId) => {
+    let newFavorites;
     const ifExists = favorites.some((product) => product.id === productId);
     if (ifExists) {
-      const newFavorites = favorites.filter(
-        (product) => product.id !== productId
-      );
-      setFavorites(newFavorites);
+      newFavorites = favorites.filter((product) => product.id !== productId);
     } else {
       const newFavProduct = products.find(
         (product) => product.id === productId
       );
-      const arr = [...favorites, newFavProduct];
-      setFavorites(arr);
+      newFavorites = [...favorites, newFavProduct];
     }
+    setFavorites(newFavorites);
+    // localStorage.setItem("favorites", JSON.stringify(newFavorites));
+    setItem("favorites", newFavorites);
   };
   const deleteFromCart = (id) => {
     const newCart = cart.filter((item) => item.id != id);
     setCart(newCart);
+    // localStorage.setItem("cart", JSON.stringify(newCart));
+    setItem("cart", newCart);
   };
   return (
     <BrowserRouter>
@@ -100,6 +124,7 @@ const App = () => {
             cart={cart}
           />
         </div>
+        <Pages products={products} />
         <BreadCrumbs products={products} />
         <Routes>
           <Route
